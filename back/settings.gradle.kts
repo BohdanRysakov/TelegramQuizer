@@ -1,1 +1,2 @@
-rootProject.name = "TelegramQuizer"
+rootProject.name = "TelegramQuizzer"
+include("back")
