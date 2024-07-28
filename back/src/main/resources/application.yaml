@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: TgQuizer
+
+telegram:
+  bot:
+    token: "7342166171:AAHBYg-aJ3KRi7ZFhpq6Cr0nfR-d9sYF7jo"
+    name: "Гриша Лох"
