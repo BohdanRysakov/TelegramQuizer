@@ -1,10 +1,10 @@
-package brysakov.telegramquizer
+package brysakov.telegramquizzer
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class TelegramQuizerApplicationTests {
+class TelegramQuizzerApplicationTests {
 
     @Test
     fun contextLoads() {

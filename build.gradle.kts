@@ -19,16 +19,42 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-batch")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+//    implementation("org.springframework.boot:spring-boot-starter-batch")
+//    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.telegram:telegrambots:6.9.0")
+
+
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.batch:spring-batch-test")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+sourceSets {
+    main {
+        kotlin {
+            srcDirs("back/src/main/kotlin")
+        }
+        resources {
+            srcDirs("back/src/main/resources")
+        }
+    }
+    test {
+        kotlin {
+            srcDirs("back/src/test/kotlin")
+        }
+        resources {
+            srcDirs("back/src/test/resources")
+        }
+    }
 }
 
 kotlin {

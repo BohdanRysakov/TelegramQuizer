@@ -1,11 +1,11 @@
-package brysakov.telegramquizer
+package brysakov.telegramquizzer
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class TelegramQuizerApplication
+class TelegramQuizzerApplication
 
 fun main(args: Array<String>) {
-    runApplication<TelegramQuizerApplication>(*args)
+    runApplication<TelegramQuizzerApplication>(*args)
 }
