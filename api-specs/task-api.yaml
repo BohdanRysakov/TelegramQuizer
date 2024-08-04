@@ -1,0 +1,228 @@
+openapi: 3.0.3
+info:
+  title: User service
+  description: API for managing users data
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8081/user-api/v1'
+tags:
+  - name: Users
+    description: Endpoints related to user management
+  - name: Leaderboard
+    description: Endpoints related to leaderboards
+paths:
+  /user:
+    post:
+      tags:
+        - Users
+      summary: Create or authorize a user
+      operationId: createUserOrAuthorize
+      parameters:
+        - name: CorrelationId
+          in: header
+          schema:
+            $ref: '#/components/headers/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                initData:
+                  type: integer
+                  description: Initial data for the user
+      responses:
+        '201':
+          description: User successfully created
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '200':
+          description: User successfully authorized
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '204':
+          description: User data updated and authorized
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+        '400':
+          description: initData is invalid
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+        '5XX':
+          description: Unexpected server error
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /leadership:
+    get:
+      tags:
+        - Leaderboard
+      summary: Get the general leaderboard
+      operationId: getGeneralLeaderboard
+      parameters:
+        - name: CorrelationId
+          in: header
+          schema:
+            $ref: '#/components/headers/CorrelationId'
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 20
+          description: Size of leaderboard
+        - name: pageNumber
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number to return
+      responses:
+        '200':
+          description: General leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDto'
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+        '5XX':
+          description: Unexpected server error
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /leaderboard/{subjectId}:
+    get:
+      tags:
+        - Leaderboard
+      summary: Get leaderboard by particular subject
+      operationId: getLeaderboardBySubject
+      parameters:
+        - name: CorrelationId
+          in: header
+          schema:
+            $ref: '#/components/headers/CorrelationId'
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the subject
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 20
+          description: Size of leaderboard
+        - name: pageNumber
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number to return
+      responses:
+        '200':
+          description: Leaderboard by particular subject
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDto'
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+        '5XX':
+          description: Unexpected server error
+          headers:
+            CorrelationId:
+              $ref: '#/components/headers/CorrelationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  headers:
+    CorrelationId:
+      schema:
+        type: string
+        example: aa1ff211-b5dd-4397-b8a8-3f640705efa2
+      description: Correlation ID for tracking responses
+
+  schemas:
+    UserDto:
+      type: object
+      required:
+        - id
+        - username
+      properties:
+        id:
+          type: string
+          description: UUID of the user
+        username:
+          type: string
+        score:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      required:
+        - title
+        - detail
+        - request
+        - time
+        - errorTraceId
+      properties:
+        title:
+          type: string
+          example: Entity not found
+        detail:
+          type: string
+          example: Entity [Post] with id = [123456] not found. You MUST use POST to add entity instead of PUT
+        request:
+          type: string
+          example: POST /user-api/v1/user
+        time:
+          type: string
+          format: date-time
+          example: 1996-12-19T16:39:57.87-08:00
+        errorTraceId:
+          type: string
+          example: ce1ff211-b5dd-4397-b8a8-3f640705efa2
+        errorCode:
+          type: integer
+          format: int32
+          example: 57
+        exception:
+          type: string
+          example: NullPointerException
+        stacktrace:
+          type: string
+        causeException:
+          type: string
+        causeStacktrace:
+          type: string
